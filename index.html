@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Llamativa</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0; /* Color de fondo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #myText {
+            line-height: 1.5;
+            border: 2px solid #3498db; /* Color del borde */
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff; /* Color de fondo del párrafo */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+            color: #333; /* Color del texto inicial */
+            font-family: 'Your Custom Font', sans-serif;
+            transition: color 0.5s ease; /* Agregamos una transición para suavizar el cambio de color */
+        }
+
+        #myText.hide-text {
+            color: transparent; /* Hacemos que el texto sea transparente cuando está oculto */
+        }
+
+        button {
+            background-color: #3498db; /* Color del botón */
+            color: #fff; /* Color del texto del botón */
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.5s ease; /* Agregamos una transición para suavizar el cambio de color del botón */
+            margin-right: 10px;
+        }
+
+        button span {
+            transition: color 0.5s ease; /* Agregamos una transición para suavizar el cambio de color del texto del botón */
+        }
+
+        button.hide-text {
+            background-color: #333; /* Cambiamos el color de fondo del botón cuando está oculto */
+        }
+
+        button.hide-text span {
+            color: #fff; /* Cambiamos el color del texto del botón cuando está oculto */
+        }
+
+        #timer {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button onclick="toggleText()" id="toggleButton"><span>Toggle Text</span></button>
+        <button onclick="toggleTimer()" id="timerButton"><span>Empezar</span></button>
+        <button onclick="resetTimer()" id="resetButton">Reiniciar</button>
+        <p id="myText">Yur Mous<br>
+            jaev yu ever noutist<br>
+            jou yu compiurer mous never werks an the first tray?<br>
+            Yu muv o raund laik wizard casting o spill,<br>
+            <br>
+            but tde cursor yust sits tde mocking you.<br>
+            Its laik tde mous kinows yuar en a jurry aend desaids tu <br>
+            teik a cufi breick <br>
+            incredibol</p>
+        <div id="timer"></div>
+    </div>
+
+    <script>
+        var timerInterval;
+        var timerRunning = false;
+        var remainingTime = 600; // Duración en segundos (10 minutos)
+
+        function toggleText() {
+            var text = document.getElementById('myText');
+            var button = document.getElementById('toggleButton');
+
+            text.classList.toggle('hide-text');
+            button.classList.toggle('hide-text');
+
+            var buttonText = text.classList.contains('hide-text') ? 'Mostrar Texto' : 'Ocultar Texto';
+            button.querySelector('span').innerText = buttonText;
+        }
+
+        function toggleTimer() {
+            var timerButton = document.getElementById('timerButton');
+
+            if (timerRunning) {
+                clearInterval(timerInterval);
+                timerButton.querySelector('span').innerText = 'Empezar';
+            } else {
+                startTimer();
+                timerButton.querySelector('span').innerText = 'Pausar';
+            }
+
+            timerRunning = !timerRunning;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            remainingTime = 600; // Reiniciar el tiempo a 10 minutos
+            updateTimerDisplay();
+            document.getElementById('timerButton').querySelector('span').innerText = 'Empezar';
+            timerRunning = false;
+        }
+
+        function startTimer() {
+            var timerDiv = document.getElementById('timer');
+
+            // Actualización del temporizador cada segundo
+            timerInterval = setInterval(function() {
+                updateTimerDisplay();
+                remainingTime--;
+
+                if (remainingTime < 0) {
+                    clearInterval(timerInterval);
+                    timerDiv.innerText = '';
+                    toggleText(); // Ocultar texto cuando el temporizador llega a cero
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            var timerDiv = document.getElementById('timer');
+            var minutes = Math.floor(remainingTime / 60);
+            var seconds = remainingTime % 60;
+            timerDiv.innerText = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        }
+    </script>
+</body>
+</html>
